@@ -3,16 +3,16 @@
 # para executar no google colab:
 # https://colab.research.google.com/drive/1rWLHIr5kqqI9BKYDBZHXXOlrkIIpR4OC?usp=sharing
 
-from math import sqrt, log
+from math import sqrt, log, e, sin, cos
 
 class Bissecao:
-    def __init__(self,a,b, precisao, numDigitos, dominioZero = True):
+    def __init__(self,a,b, precisao, numCasasDecimais):
         # a e b são os intervalos iniciais 
         self.a = a #  início do intervalo
         self.b = b # fim do intervalo
         self.precisao = precisao 
-        self.numDigitos = numDigitos - 1 
-        self.dominioZero = dominioZero
+        self.numCasasDecimais = numCasasDecimais 
+
 
     def funcao(self, x):
         return x**3-9*x+3
@@ -24,9 +24,6 @@ class Bissecao:
         Fx2 = None
         raizes = []
         while x <= self.b:
-            if not self.dominioZero and x == 0:
-                x += 1
-                continue
             
             Fx = self.funcao(x)
                 
@@ -45,23 +42,25 @@ class Bissecao:
         raizes = self.acharIntervalos()
 
         if not raizes:
-            print("Não foi possível encontrar raízes!")
+            print("Não foi possível encontrar raízes!\n\n")
         elif len(raizes) == 1:
-            print("Foi encontrado 1 raiz")
+            print("Foi encontrado 1 raiz\n\n")
         else:
             print(f"Foram encontradas {len(raizes)} raízes.\n\n")
 
         for raiz in raizes:
-            a = round(raiz[0], self.numDigitos)
-            b = round(raiz[1], self.numDigitos)
-            qtdEspacos = self.numDigitos * 2
+            a = round(raiz[0], self.numCasasDecimais)
+            b = round(raiz[1], self.numCasasDecimais)
+            #qtdEspacos = self.numCasasDecimais * 2
             iteracao = 1
-            n =  qtdEspacos + 1
+            #n =  qtdEspacos + 1
 
-            print("Iteração" + "  "  + "a" + " " * n + "b" + " "  * n + "m" + " " * n + "b-a" + " " * ( 23 - self.qtdCaracteres(b-a)) + "f(a)"  + "   "  + "f(m)" + "   " + "f(b)")
+            print("Iteração" , " " * self.qtdEspacos("iteracao") , "a" , " " * self.qtdEspacos("a") ,
+                  "b" , " "  * self.qtdEspacos("b") , "m" , " " * self.qtdEspacos("m") , "b-a" , " " * (27) , 
+                  "f(a)"  , "   "  , "f(m)" , "   " , "f(b)", sep="")
             
             while b-a > self.precisao:
-                m = round((a+b)/2, self.numDigitos)
+                m = round((a+b)/2, self.numCasasDecimais)
                 Fm = self.funcao(m)
                 Fa = self.funcao(a)
                 Fb = self.funcao(b)
@@ -70,7 +69,10 @@ class Bissecao:
                 mSinal = "+" if Fm > 0 else "-"
                 bSinal = "+" if Fb > 0 else "-" 
 
-                print(str(iteracao) + " " * (10 - self.qtdCaracteres(iteracao)) + str(a) + " " * ( qtdEspacos - self.qtdCaracteres(a) + 2) + str(b) + " " *  ( qtdEspacos - self.qtdCaracteres(b) + 2) + str(m) + " " *  ( qtdEspacos - self.qtdCaracteres(m) + 2) + str(b-a) + " " *  ( 25 - self.qtdCaracteres(b-a) ) + str(aSinal)  + " " * 6   + str(mSinal)  + " " * 6  + str(bSinal))
+                print(str(iteracao) , " " * self.qtdEspacos(iteracao) , str(a) , " " * self.qtdEspacos(a) , str(b) , 
+                      " " *  self.qtdEspacos(b) , str(m) , " " *  self.qtdEspacos(m) , str(b-a) , 
+                      " " * (30 - self.qtdCaracteres(b-a)) , str(aSinal)  , " " * 6 , str(mSinal)  , " " * 6  , str(bSinal), 
+                      sep='')
                
                 if Fm * Fa < 0:
                     b = m                                                                 
@@ -83,7 +85,9 @@ class Bissecao:
 
                 iteracao += 1
         
-            print(str(iteracao) + " " * (10 - self.qtdCaracteres(iteracao)) + str(a) + " " * ( qtdEspacos - self.qtdCaracteres(a) + 2) + str(b) + " " *  ( qtdEspacos - self.qtdCaracteres(b) + 2) + str(round((a+b)/2, self.numDigitos)) + " " *  ( qtdEspacos - self.qtdCaracteres(round((a+b)/2, self.numDigitos)) + 2) + str(b-a) + " " *  ( 25 - self.qtdCaracteres(b-a)) + str(aSinal)  + " " * 6   + str(mSinal)  + " " * 6  + str(bSinal) )
+            print(str(iteracao) , " " * self.qtdEspacos(iteracao) , str(a) , " " * self.qtdEspacos(a) , str(b) ,
+                  " " *  self.qtdEspacos(b) , str(m) , " " *  self.qtdEspacos(m) , str(b-a) , 
+                  " " * (30 - self.qtdCaracteres(b-a)) , str(aSinal)  , " " * 6   , str(mSinal)  , " " * 6  , str(bSinal), sep="")
             
             print("\n\n")
 
@@ -91,9 +95,23 @@ class Bissecao:
         num = str(num)
         return len(num)
 
+    def qtdEspacos(self, num):
+        num = str(num)
+        return  self.numCasasDecimais * 2 + 9 - len(num)  
 
-x = Bissecao(-5,5, 10**-3, 10, False)
+    # def grafico(self):
+    #     import matplotlib.pyplot as plt
+    #     import numpy as np
+
+    #     arrayValores = np.arange(self.a, self.b, 0.1)
+    #     plt.plot(arrayValores, self.funcao(arrayValores))
+    #     plt.show()
+
+
+x = Bissecao(-5,5, 10**-5, 8)
 
 #print(x.acharIntervalos())
 
 x.metodoBissecao()
+
+#x.grafico()
