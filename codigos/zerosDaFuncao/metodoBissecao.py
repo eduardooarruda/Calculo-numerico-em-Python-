@@ -51,10 +51,9 @@ class Bissecao:
         for raiz in raizes:
             a = round(raiz[0], self.numCasasDecimais)
             b = round(raiz[1], self.numCasasDecimais)
-            #qtdEspacos = self.numCasasDecimais * 2
+ 
             iteracao = 1
-            #n =  qtdEspacos + 1
-
+          
             print("Iteração" , " " * self.qtdEspacos("iteracao") , "a" , " " * self.qtdEspacos("a") ,
                   "b" , " "  * self.qtdEspacos("b") , "m" , " " * self.qtdEspacos("m") , "b-a" , " " * (27) , 
                   "f(a)"  , "   "  , "f(m)" , "   " , "f(b)", sep="")
@@ -99,19 +98,11 @@ class Bissecao:
         num = str(num)
         return  self.numCasasDecimais * 2 + 9 - len(num)  
 
-    # def grafico(self):
-    #     import matplotlib.pyplot as plt
-    #     import numpy as np
-
-    #     arrayValores = np.arange(self.a, self.b, 0.1)
-    #     plt.plot(arrayValores, self.funcao(arrayValores))
-    #     plt.show()
-
+   
 
 x = Bissecao(-5,5, 10**-5, 8)
 
-#print(x.acharIntervalos())
 
 x.metodoBissecao()
 
-#x.grafico()
+

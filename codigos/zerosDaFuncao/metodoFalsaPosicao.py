@@ -109,6 +109,4 @@ class metodoFalsaPosicao:
 
 x = metodoFalsaPosicao(-5,5,10**-5, 8)
 
-#print(x.acharIntervalos())
-
 x.MFP()
